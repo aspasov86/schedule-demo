@@ -1,0 +1,20 @@
+.Cell {
+  padding: 5px;
+}
+
+.Cell:hover {
+  background: lightgray;
+}
+
+.regular {
+  border: 1px solid black;
+}
+
+.today {
+  border: 1px solid salmon;
+}
+
+.Cell > div {
+  border: 1px solid blue;
+  background: lightblue;
+}

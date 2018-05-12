@@ -1,0 +1,12 @@
+.Schedule {
+  border: 1px solid black;
+}
+
+.topRow {
+  border: 1px solid black;
+  padding: 10px;
+}
+
+.Schedulte > td {
+  width: 100%;
+}

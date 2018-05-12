@@ -1,0 +1,15 @@
+th {
+  border: 1px solid black;
+  padding: 10px;
+  position: relative;
+}
+
+th > img {
+  border: 1px solid black;
+  position: absolute;
+  left: 0;
+}
+
+th > span {
+  font-size: 12px;
+}
