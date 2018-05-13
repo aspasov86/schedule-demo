@@ -28,7 +28,7 @@ class Cell extends Component {
         cellColorPosition = "#99C68E";
         break;
       case ('Graphic Designer'):
-        cellColorPosition = "#99C68E";
+        cellColorPosition = "#ffb380";
         break;
       default:
         cellColorPosition = null;

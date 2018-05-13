@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { Table, Button } from 'react-bootstrap';
 
-// import './Schedule.css';
+import './Schedule.css';
 import { DAYS, MONTHS } from '../../helpers/constants';
 import getCalendar from '../../helpers/calendar';
 import Cell from '../Cell/Cell';
@@ -269,7 +269,7 @@ class Schedule extends Component {
 
       return (
         <Aux>
-        <Table responsive bordered condensed hover striped>
+        <Table responsive bordered condensed hover striped className="Schedule">
           <thead>
             <tr>
               <th className="topRow">
