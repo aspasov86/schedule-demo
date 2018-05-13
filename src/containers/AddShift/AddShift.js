@@ -59,7 +59,8 @@ class AddShift extends Component {
         this.props.closeWindow();
       })
       .catch(err => {
-        this.props.errorReport();
+        this.props.closeWindow();
+        this.props.reportError();
       });
   }
 
@@ -78,6 +79,7 @@ class AddShift extends Component {
           value={opt.value}>{opt.option}</option>
       );
     })
+
     return(
       <form onSubmit={this.createNewShift}>
         <FormGroup>
@@ -105,12 +107,3 @@ class AddShift extends Component {
 }
 
 export default AddShift;
-
-
-// <select
-//   onChange={this.shiftStartsAtHandler}
-//   defaultValue={this.state.start}>{optionsFrom}</select>
-// <select
-//   onChange={this.shiftFinishesAtHandler}
-//   value={this.state.finish}>{optionsTo}</select><br/>
-// <button>Create shift</button>

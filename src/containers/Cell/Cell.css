@@ -1,20 +1,18 @@
-.Cell {
-  padding: 5px;
-}
-
 .Cell:hover {
-  background: lightgray;
-}
-
-.regular {
-  border: 1px solid black;
+  opacity: .5 !important;
 }
 
 .today {
-  border: 1px solid salmon;
+  background: #fab4be !important;
 }
 
+.today:hover {
+  background: #f34963 !important;
+}
+
+.today > div,
 .Cell > div {
-  border: 1px solid blue;
-  background: lightblue;
+  color: black !important;
+  border: 1px solid blue !important;
+  background: lightblue !important;
 }

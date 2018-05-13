@@ -28,7 +28,8 @@ class NewEmployee extends Component {
         this.props.closeWindow();
       })
       .catch(error => {
-        this.props.errorReport();
+        this.props.closeWindow();
+        this.props.reportError();
       })
   }
 

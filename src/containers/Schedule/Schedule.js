@@ -8,12 +8,13 @@ import getCalendar from '../../helpers/calendar';
 import Cell from '../Cell/Cell';
 import avatarImg from '../../assets/images/avatar.png';
 import Modal from '../../components/UI/Modal/Modal';
-import Aux from '../../hoc/Aux/Auxiliary';
+import Aux from '../../hoc/Auxiliary/Auxiliary';
 import NewEmployee from '../NewEmployee/NewEmployee';
 import axios from '../../axios-instance';
 import Employee from '../../components/Employee/Employee';
 import AddShift from '../AddShift/AddShift';
 import Search from '../../components/UI/Search/Search';
+import ShiftDetails from '../ShiftDetails/ShiftDetails';
 
 class Schedule extends Component {
   year = new Date().getFullYear();
@@ -33,6 +34,8 @@ class Schedule extends Component {
     shift: null,
     shiftAdded: false,
     allShifts: null,
+    checkingShiftDetails: false,
+    shiftInDetail: null,
     filterByEmployee: null
   }
 
@@ -88,7 +91,7 @@ class Schedule extends Component {
   }
 
   componentDidUpdate() {
-    //ajax for employees
+    //ajax for updating employee list
     if (this.state.employeeAdded) {
       this.setState({employeeAdded: false});
       axios.get('/employees.json')
@@ -105,11 +108,8 @@ class Schedule extends Component {
           }
           this.setState({employees});
         })
-        .catch(err => {
-          this.reportError();
-        })
     }
-    //ajax for shifts
+    //ajax for updating shifts
     if (this.state.shiftAdded) {
       this.setState({shiftAdded: false});
       axios.get('/shifts.json')
@@ -120,9 +120,6 @@ class Schedule extends Component {
             this.setState({allShifts});
           }
         })
-        .catch(err => {
-          this.reportError();
-        });
     }
   }
 
@@ -145,7 +142,7 @@ class Schedule extends Component {
   }
 
   closeWindowHandler = () => {
-    this.setState({addingEmployee: false, error: false, pickingShift: false});
+    this.setState({addingEmployee: false, error: false, pickingShift: false, checkingShiftDetails: false});
   }
 
   pickShiftHandler = (shift) => {
@@ -158,6 +155,10 @@ class Schedule extends Component {
 
   shiftIsAdded = () => {
     this.setState({shiftAdded: true});
+  }
+
+  checkingShiftDetailsHandler = (shift) => {
+    this.setState({checkingShiftDetails: true, shiftInDetail: shift});
   }
 
   render() {
@@ -196,7 +197,8 @@ class Schedule extends Component {
                 employee={filter}
                 pickShift={this.pickShiftHandler}
                 disabled={this.state.addingEmployee || this.state.pickingShift}
-                shifts={this.state.allShifts}/>
+                shifts={this.state.allShifts}
+                checkingShiftDetails={this.checkingShiftDetailsHandler}/>
             ))}
           </tr>
         );
@@ -213,7 +215,8 @@ class Schedule extends Component {
                             employee={employee}
                             pickShift={this.pickShiftHandler}
                             disabled={this.state.addingEmployee || this.state.pickingShift}
-                            shifts={this.state.allShifts}/>
+                            shifts={this.state.allShifts}
+                            checkingShiftDetails={this.checkingShiftDetailsHandler}/>
                         ))}
                       </tr>
                     );
@@ -229,7 +232,7 @@ class Schedule extends Component {
         </Modal>
       ) : null;
       //adding Employees with Modal
-      if (this.state.addingEmployee && !this.state.error && !this.state.pickingShift) {
+      if (this.state.addingEmployee && !this.state.error && !this.state.pickingShift && !this.state.checkingShiftDetails) {
           modal = (
             <Modal closeWindow={this.closeWindowHandler}>
               Adding a new Employee...
@@ -239,6 +242,7 @@ class Schedule extends Component {
                 reportError={this.reportError}/>
             </Modal>
           );
+          //creating shifts with modal
         } else if (this.state.pickingShift) {
           modal = (
             <Modal closeWindow={this.closeWindowHandler}>
@@ -248,6 +252,17 @@ class Schedule extends Component {
                 shiftAdded={this.shiftIsAdded}
                 closeWindow={this.closeWindowHandler}
                 reportError={this.reportError}/>
+            </Modal>
+          );
+          //checking out the shift details with modal
+        } else if (this.state.checkingShiftDetails) {
+          modal = (
+            <Modal closeWindow={this.closeWindowHandler}>
+              <h4>Shift Details</h4>
+              <ShiftDetails
+                shift={this.state.shiftInDetail}
+                shifts={this.state.allShifts}
+                employees={this.state.employees}/>
             </Modal>
           );
         }
