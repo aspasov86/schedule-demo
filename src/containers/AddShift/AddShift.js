@@ -6,41 +6,32 @@ import axios from '../../axios-instance';
 
 class AddShift extends Component {
   state = {
-    from : [],
-    to : [],
+    from : OPTIONS,
+    to : OPTIONS,
     shiftName: '',
-    start: 32,
-    finish: 64,
+    start: 0,
+    finish: 1,
     newShift: null
   }
 
-  componentWillMount() {
-    let arr = this.generateOptionsValues(0, 0);
-    this.setState({from: arr[0], to: arr[1]});
-  }
-
-  generateOptionsValues(indexFrom, indexTo) {
-    let timeFrom = [];
+  adjustFinishTimeOptions(indexTo) {
     let timeTo = [];
-    for (let i = indexFrom; i < OPTIONS.length; i++) {
-        timeFrom.push(OPTIONS[i]);
-    }
     for (let i = indexTo; i < OPTIONS.length; i++) {
       timeTo.push(OPTIONS[i]);
     }
     for (let i = 0; i < indexTo - 1; i++) {
-      timeTo.push(OPTIONS[i])
+      timeTo.push(OPTIONS[i]);
     }
-    return [timeFrom, timeTo];
+    return timeTo;
   }
 
   shiftStartsAtHandler = event => {
     //adjisting the "finish" time first as it can't be the same as start
     let startAsNumber = parseInt(event.target.value, 10);
     let indexTo = startAsNumber + 1;
-    let arr = this.generateOptionsValues(0, indexTo);
+    let to = this.adjustFinishTimeOptions(indexTo);
     //fixing the options and updating the time of the shift
-    this.setState({from: arr[0], to: arr[1], start: startAsNumber, finish: indexTo});
+    this.setState({to, start: startAsNumber, finish: indexTo});
   }
 
   shiftFinishesAtHandler = event => {
@@ -72,21 +63,20 @@ class AddShift extends Component {
   }
 
   render() {
-    let optionsFrom = this.state.from.map((opt, i) => {
+    let optionsFrom = this.state.from.map(opt => {
       return (
         <option
-          key={opt + i}
-          value={i}>{opt}</option>
+          key={opt.option + opt.value}
+          value={opt.value}>{opt.option}</option>
       );
     })
-    let optionsTo = this.state.to.map((opt, i) => {
+    let optionsTo = this.state.to.map(opt => {
       return (
         <option
-          key={opt + i}
-          value={i}>{opt}</option>
+          key={opt.option + opt.value}
+          value={opt.value}>{opt.option}</option>
       );
     })
-
     return(
       <form onSubmit={this.createNewShift}>
         <input
@@ -99,7 +89,7 @@ class AddShift extends Component {
           defaultValue={this.state.start}>{optionsFrom}</select>
         <select
           onChange={this.shiftFinishesAtHandler}
-          defaultValue={this.state.finish}>{optionsTo}</select><br/>
+          value={this.state.finish}>{optionsTo}</select><br/>
         <button>Create shift</button>
       </form>
     );

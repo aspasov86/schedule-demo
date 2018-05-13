@@ -30,7 +30,7 @@ class Cell extends Component {
             <td
               key={this.props.employee.id + this.props.day.month + this.props.day.monthDay + this.props.day.weekDay}
               className={style.join(' ')}>
-              <div>{OPTIONS[this.props.shifts[i].startTime]} - {OPTIONS[this.props.shifts[i].endTime]}</div>
+              <div>{OPTIONS[this.props.shifts[i].startTime].option} - {OPTIONS[this.props.shifts[i].endTime].option}</div>
             </td>
           );
         }

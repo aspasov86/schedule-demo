@@ -14,7 +14,6 @@ class App extends Component {
   }
 
   render() {
-    console.log(this.state.currentWeekNo);
     return (
       <BrowserRouter>
         <div className="App">
