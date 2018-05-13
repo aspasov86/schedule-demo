@@ -6,8 +6,8 @@ import axios from '../../axios-instance';
 class NewEmployee extends Component {
   state = {
     employee: {
-      firstName: '',
-      lastName: '',
+      firstName: false,
+      lastName: false,
       avatar:  true,
       position: 'Employee'
     }
@@ -22,14 +22,13 @@ class NewEmployee extends Component {
   addEmployeeHandler = event => {
     event.preventDefault();
     const employeeData = {...this.state.employee};
-
     axios.post('/employees.json', employeeData)
       .then(res => {
         this.props.employeeAdded();
         this.props.closeWindow();
       })
       .catch(error => {
-        console.log(error);
+        this.props.errorReport();
       })
   }
 
@@ -63,7 +62,7 @@ class NewEmployee extends Component {
               <option>Graphic Designer</option>
           </FormControl>
         </FormGroup>
-        <Button type="submit">Add Employee</Button>
+        <Button type="submit" disabled={!this.state.employee.firstName || !this.state.employee.lastName}>Add Employee</Button>
       </form>
     );
   }

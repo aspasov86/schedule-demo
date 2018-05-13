@@ -59,7 +59,7 @@ class AddShift extends Component {
         this.props.closeWindow();
       })
       .catch(err => {
-        console.log(err);
+        this.props.errorReport();
       });
   }
 
@@ -89,7 +89,7 @@ class AddShift extends Component {
         </FormGroup>{' '}
         <FormGroup>
           <ControlLabel>Select start and end time</ControlLabel>
-          <FormControl 
+          <FormControl
             componentClass='select'
             onChange={this.shiftStartsAtHandler}
             defaultValue={this.state.start}>{optionsFrom}</FormControl>

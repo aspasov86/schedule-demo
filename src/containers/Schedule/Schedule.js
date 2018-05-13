@@ -53,7 +53,7 @@ class Schedule extends Component {
         this.setState({employees});
       })
       .catch(err => {
-        this.setState({error: true});
+        this.reportError();
       })
     //getting shifts
     this.setState({shiftAdded: false});
@@ -66,7 +66,7 @@ class Schedule extends Component {
         }
       })
       .catch(err => {
-        this.setState({error: true});
+        this.reportError();
       });
   }
 
@@ -106,7 +106,7 @@ class Schedule extends Component {
           this.setState({employees});
         })
         .catch(err => {
-          this.setState({error: true});
+          this.reportError();
         })
     }
     //ajax for shifts
@@ -121,9 +121,13 @@ class Schedule extends Component {
           }
         })
         .catch(err => {
-          this.setState({error: true});
+          this.reportError();
         });
     }
+  }
+
+  reportError = () => {
+    this.setState({error: true});
   }
 
   goBackHandler = id => {
@@ -225,13 +229,14 @@ class Schedule extends Component {
         </Modal>
       ) : null;
       //adding Employees with Modal
-      if (this.state.addingEmployee && !this.state.error) {
+      if (this.state.addingEmployee && !this.state.error && !this.state.pickingShift) {
           modal = (
             <Modal closeWindow={this.closeWindowHandler}>
               Adding a new Employee...
               <NewEmployee
                 closeWindow={this.closeWindowHandler}
-                employeeAdded={this.employeeIsAdded}/>
+                employeeAdded={this.employeeIsAdded}
+                reportError={this.reportError}/>
             </Modal>
           );
         } else if (this.state.pickingShift) {
@@ -241,7 +246,8 @@ class Schedule extends Component {
               <AddShift
                 shift={this.state.shift}
                 shiftAdded={this.shiftIsAdded}
-                closeWindow={this.closeWindowHandler}/>
+                closeWindow={this.closeWindowHandler}
+                reportError={this.reportError}/>
             </Modal>
           );
         }
