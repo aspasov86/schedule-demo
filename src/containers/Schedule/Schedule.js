@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
+import { Table, Button } from 'react-bootstrap';
 
-import './Schedule.css';
+// import './Schedule.css';
 import { DAYS, MONTHS } from '../../helpers/constants';
 import getCalendar from '../../helpers/calendar';
 import Cell from '../Cell/Cell';
@@ -247,7 +248,7 @@ class Schedule extends Component {
 
       return (
         <Aux>
-        <table className="Schedule">
+        <Table responsive bordered condensed hover striped>
           <thead>
             <tr>
               <th className="topRow">
@@ -257,9 +258,9 @@ class Schedule extends Component {
                 </p>
                 <Search
                   employees={this.state.employees}
-                  filter={this.filterByEmployeeHandler}/><br/>
-                <button onClick={() => this.goBackHandler(index)} disabled={this.props.currentWeekNo < 1}> - </button>
-                <button onClick={() => this.goForwardHandler(index)} disabled={this.props.currentWeekNo > 51}> + </button>
+                  filter={this.filterByEmployeeHandler}/>
+                <Button onClick={() => this.goBackHandler(index)} disabled={this.props.currentWeekNo < 1}> &#60;= </Button>
+                <Button onClick={() => this.goForwardHandler(index)} disabled={this.props.currentWeekNo > 51}> =&#62; </Button>
               </th>
               {theadDays}
             </tr>
@@ -267,14 +268,14 @@ class Schedule extends Component {
           <tbody>
           {cells}
             <tr>
-              <th>
-              <button
+              <th colSpan={currentWeek.length + 1}>
+              <Button
                 onClick={this.addingEmployeeWindowHandler}
-                disabled={this.state.addingEmployee}>Add Employee</button>
+                disabled={this.state.addingEmployee}>Add Employee</Button>
               </th>
             </tr>
           </tbody>
-        </table>
+        </Table>
           {modal}
         </Aux>
       );

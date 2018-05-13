@@ -18,8 +18,6 @@ class Cell extends Component {
         className={style.join(' ')}
         onClick={() => !this.props.disabled ? this.props.pickShift(shift) : null}
         disabled={this.props.disabled}>
-        {this.props.day.month} {this.props.day.monthDay}<br/>
-        {this.props.employee.lastName}
       </td>
     );
     let shiftCell = null;

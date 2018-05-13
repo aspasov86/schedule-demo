@@ -1,4 +1,5 @@
 import React from 'react';
+import { FormGroup, FormControl } from 'react-bootstrap';
 
 const search = props => {
   const options = props.employees ? props.employees.map(employee => {
@@ -9,17 +10,29 @@ const search = props => {
     );}) : null;
   return (
     <div>
-      <input
-        type="text"
-        name="employee"
-        list="employees"
-        placeholder="Filter per Employee"
-        onChange={props.filter}/>
-      <datalist id="employees">
-        {options}
-      </datalist>
+      <FormGroup>
+        <FormControl
+          type="text"
+          name="employee"
+          list="employees"
+          placeholder="Filter per Employee"
+          onChange={props.filter}/>
+        <datalist id="employees">
+          {options}
+        </datalist>
+      </FormGroup>
     </div>
   );
 }
 
 export default search;
+
+// <input
+//   type="text"
+//   name="employee"
+//   list="employees"
+//   placeholder="Filter per Employee"
+//   onChange={props.filter}/>
+// <datalist id="employees">
+//   {options}
+// </datalist>

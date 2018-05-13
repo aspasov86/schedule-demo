@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { FormControl, FormGroup, ControlLabel, Button } from 'react-bootstrap';
+
 import axios from '../../axios-instance';
 
 class NewEmployee extends Component {
@@ -34,25 +36,34 @@ class NewEmployee extends Component {
   render() {
     return (
       <form onSubmit={this.addEmployeeHandler}>
-        <input
-          type="text"
-          name="firstName"
-          placeholder="Your First Name"
-          onChange={event => this.inputChangedHandler(event, 'firstName')} />
-        <input
-          type="text"
-          name="lastName"
-          placeholder="Your Last Name"
-          onChange={event => this.inputChangedHandler(event, 'lastName')} />
-        <select onChange = {event => this.inputChangedHandler(event, 'position')}>
-          <option>Employee</option>
-          <option>Supervisor</option>
-          <option>Integration specialist</option>
-          <option>Support Technician</option>
-          <option>Floor Support</option>
-          <option>Graphic Designer</option>
-        </select><br/>
-        <button>Add Employee</button>
+        <FormGroup>
+          <ControlLabel>First Name</ControlLabel>
+          <FormControl
+            type="text"
+            name="firstName"
+            onChange={event => this.inputChangedHandler(event, 'firstName')} />
+        </FormGroup>
+        <FormGroup>
+          <ControlLabel>Last Name</ControlLabel>
+          <FormControl
+            type="text"
+            name="lastName"
+            onChange={event => this.inputChangedHandler(event, 'lastName')} />
+        </FormGroup>
+        <FormGroup>
+          <ControlLabel>Position</ControlLabel>
+          <FormControl
+            componentClass='select'
+            onChange = {event => this.inputChangedHandler(event, 'position')}>
+              <option>Employee</option>
+              <option>Supervisor</option>
+              <option>Integration specialist</option>
+              <option>Support Technician</option>
+              <option>Floor Support</option>
+              <option>Graphic Designer</option>
+          </FormControl>
+        </FormGroup>
+        <Button type="submit">Add Employee</Button>
       </form>
     );
   }

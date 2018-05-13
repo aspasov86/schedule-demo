@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { FormControl, FormGroup, ControlLabel, Button } from 'react-bootstrap';
 
 import { OPTIONS } from '../../helpers/constants';
 import axios from '../../axios-instance';
@@ -79,21 +80,37 @@ class AddShift extends Component {
     })
     return(
       <form onSubmit={this.createNewShift}>
-        <input
-          type='text'
-          name="shiftName"
-          placeholder="Shift name"
-          onChange={this.changeShiftName}/><br/>
-        <select
-          onChange={this.shiftStartsAtHandler}
-          defaultValue={this.state.start}>{optionsFrom}</select>
-        <select
-          onChange={this.shiftFinishesAtHandler}
-          value={this.state.finish}>{optionsTo}</select><br/>
-        <button>Create shift</button>
+        <FormGroup>
+          <ControlLabel>Shift Name</ControlLabel>{' '}
+          <FormControl
+            type='text'
+            name="shiftName"
+            onChange={this.changeShiftName}/>
+        </FormGroup>{' '}
+        <FormGroup>
+          <ControlLabel>Select start and end time</ControlLabel>
+          <FormControl 
+            componentClass='select'
+            onChange={this.shiftStartsAtHandler}
+            defaultValue={this.state.start}>{optionsFrom}</FormControl>
+          <FormControl
+            componentClass='select'
+            onChange={this.shiftFinishesAtHandler}
+            value={this.state.finish}>{optionsTo}</FormControl>
+        </FormGroup>
+        <Button type="submit">Create Shift</Button>
       </form>
     );
   }
 }
 
 export default AddShift;
+
+
+// <select
+//   onChange={this.shiftStartsAtHandler}
+//   defaultValue={this.state.start}>{optionsFrom}</select>
+// <select
+//   onChange={this.shiftFinishesAtHandler}
+//   value={this.state.finish}>{optionsTo}</select><br/>
+// <button>Create shift</button>
