@@ -12,13 +12,13 @@ import NewEmployee from '../NewEmployee/NewEmployee';
 import axios from '../../axios-instance';
 import Employee from '../../components/Employee/Employee';
 import AddShift from '../AddShift/AddShift';
+import Search from '../../components/UI/Search/Search';
 
 class Schedule extends Component {
   year = new Date().getFullYear();
 
   state = {
     calendar: getCalendar(this.year),
-    // currentWeekNo: getCurrentWeekNo(getCalendar(this.year)),
     currentDay: {
       weekDay: DAYS[new Date().getDay()],
       monthDay: new Date().getDate(),
@@ -31,7 +31,8 @@ class Schedule extends Component {
     pickingShift: false,
     shift: null,
     shiftAdded: false,
-    allShifts: null
+    allShifts: null,
+    filterByEmployee: null
   }
 
   componentDidMount() {
@@ -66,6 +67,23 @@ class Schedule extends Component {
       .catch(err => {
         this.setState({error: true});
       });
+  }
+
+  filterByEmployeeHandler = event => {
+    const string = event.target.value.split(" ");
+    const firstName = string[0];
+    const lastName = string[1];
+    const employees = [...this.state.employees];
+    let match = false;
+    for (let i = 0; i < employees.length; i++) {
+      if (employees[i].firstName === firstName && employees[i].lastName === lastName) {
+          match = true;
+        this.setState({filterByEmployee: employees[i]});
+      }
+    }
+    if (!match) {
+      this.setState({filterByEmployee: null});
+    }
   }
 
   componentDidUpdate() {
@@ -159,23 +177,43 @@ class Schedule extends Component {
           );
         }
       })
-      const cells = this.state.employees ? this.state.employees.map(employee => {
-        return (
-          <tr key={employee.firstName + employee.lastName}>
-              <Employee employee={employee} />
+      let cells = null;
+      if (this.state.filterByEmployee) {
+        let filter = this.state.filterByEmployee;
+        cells = (
+          <tr key={filter.firstName + filter.lastName}>
+              <Employee employee={filter} />
             {currentWeek.map(day => (
               <Cell
                 key={day.monthDay + day.weekDay + day.month}
                 day={day}
                 today={this.state.currentDay}
-                employee={employee}
+                employee={filter}
                 pickShift={this.pickShiftHandler}
                 disabled={this.state.addingEmployee || this.state.pickingShift}
                 shifts={this.state.allShifts}/>
             ))}
           </tr>
         );
-      }) : null;
+      } else if (this.state.employees) {
+        cells = this.state.employees.map(employee => {
+                    return (
+                      <tr key={employee.firstName + employee.lastName}>
+                        <Employee employee={employee} />
+                        {currentWeek.map(day => (
+                          <Cell
+                            key={day.monthDay + day.weekDay + day.month}
+                            day={day}
+                            today={this.state.currentDay}
+                            employee={employee}
+                            pickShift={this.pickShiftHandler}
+                            disabled={this.state.addingEmployee || this.state.pickingShift}
+                            shifts={this.state.allShifts}/>
+                        ))}
+                      </tr>
+                    );
+                  })
+                };
 
       //handling errors with the Modal
       let modal = this.state.error ? (
@@ -217,6 +255,9 @@ class Schedule extends Component {
                   {currentWeek[0].month} {currentWeek[0].monthDay}, {this.year} -
                   {currentWeek[currentWeek.length-1].month} {currentWeek[currentWeek.length-1].monthDay}, {this.year}
                 </p>
+                <Search
+                  employees={this.state.employees}
+                  filter={this.filterByEmployeeHandler}/><br/>
                 <button onClick={() => this.goBackHandler(index)} disabled={this.props.currentWeekNo < 1}> - </button>
                 <button onClick={() => this.goForwardHandler(index)} disabled={this.props.currentWeekNo > 51}> + </button>
               </th>
